@@ -1,0 +1,37 @@
+// This is your Prisma schema file
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Ad {
+  id            String   @id @default(cuid())
+  adArchiveId   String   @unique
+  pageId        String
+  pageName      String
+  title         String?
+  isActive      Boolean  @default(true)
+  firstSeen     DateTime @default(now())
+  lastSeen      DateTime @default(now())
+  startDate     DateTime
+  endDate       DateTime?
+  url           String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([pageId])
+  @@index([isActive])
+}
+
+model Page {
+  id        String   @id
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([name])
+} 
