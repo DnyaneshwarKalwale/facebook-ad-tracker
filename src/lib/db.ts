@@ -1,13 +1,13 @@
 import type { AdResponse } from './api';
-import { prisma } from './prisma';
+import prisma from './prisma';
 
 export async function upsertPage(pageId: string, pageName: string) {
   return prisma.page.upsert({
-    where: { id: pageId },
-    update: { name: pageName },
+    where: { pageId: pageId },
+    update: { pageName: pageName },
     create: {
-      id: pageId,
-      name: pageName,
+      pageId: pageId,
+      pageName: pageName,
     },
   });
 }
