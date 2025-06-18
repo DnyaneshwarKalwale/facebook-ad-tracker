@@ -1,4 +1,8 @@
 import { neon } from '@neondatabase/serverless';
+import { config } from 'dotenv';
+
+// Load environment variables
+config({ path: '.env.development.local' });
 
 async function migrate() {
   if (!process.env.DATABASE_URL) {
