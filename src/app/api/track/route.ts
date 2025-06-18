@@ -14,8 +14,27 @@ export async function POST(request: Request) {
     
     // Process all ads
     const processPromises = data.results.map(async (ad) => {
-      await upsertPage(ad.page_id, ad.page_name);
-      await upsertAd(ad);
+      if (ad.page_id && ad.page_name) {
+        await upsertPage(ad.page_id, ad.page_name);
+        const adResponse = {
+          ad_archive_id: ad.ad_archive_id,
+          page_id: ad.page_id,
+          page_name: ad.page_name,
+          is_active: ad.is_active,
+          start_date: ad.start_date || new Date(ad.start_date_string).getTime(),
+          end_date: ad.end_date || (ad.end_date_string ? new Date(ad.end_date_string).getTime() : 0),
+          url: ad.url || '',
+          start_date_string: ad.start_date_string,
+          end_date_string: ad.end_date_string || '',
+          snapshot: {
+            title: ad.snapshot?.title || null,
+            page_name: ad.page_name,
+            body: ad.snapshot?.body,
+            cards: ad.snapshot?.cards
+          }
+        };
+        await upsertAd(adResponse);
+      }
     });
 
     await Promise.all(processPromises);
@@ -48,8 +67,27 @@ export async function GET(request: Request) {
     
     // Process all ads
     const processPromises = data.results.map(async (ad) => {
-      await upsertPage(ad.page_id, ad.page_name);
-      await upsertAd(ad);
+      if (ad.page_id && ad.page_name) {
+        await upsertPage(ad.page_id, ad.page_name);
+        const adResponse = {
+          ad_archive_id: ad.ad_archive_id,
+          page_id: ad.page_id,
+          page_name: ad.page_name,
+          is_active: ad.is_active,
+          start_date: ad.start_date || new Date(ad.start_date_string).getTime(),
+          end_date: ad.end_date || (ad.end_date_string ? new Date(ad.end_date_string).getTime() : 0),
+          url: ad.url || '',
+          start_date_string: ad.start_date_string,
+          end_date_string: ad.end_date_string || '',
+          snapshot: {
+            title: ad.snapshot?.title || null,
+            page_name: ad.page_name,
+            body: ad.snapshot?.body,
+            cards: ad.snapshot?.cards
+          }
+        };
+        await upsertAd(adResponse);
+      }
     });
 
     await Promise.all(processPromises);
